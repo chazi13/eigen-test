@@ -34,7 +34,7 @@ export default function ArticlesPage() {
           <Spin />
         ) : (
           <List
-            grid={{ gutter: 16, column: 4 }}
+            grid={{ gutter: 16, xs: 1, sm: 2, md: 2, lg: 3, xl: 4, xxl: 6 }}
             dataSource={articles}
             renderItem={(item) => (
               <List.Item>
