@@ -95,13 +95,13 @@ export default function AppBar() {
               paddingLeft: 10,
             }}
             selectedKeys={[category]}
-          >
-            {categories.map((cat) => (
-              <Menu.Item key={cat}>
+            items={categories.map((cat) => ({
+              key: cat,
+              label: (
                 <Link href={`/?category=${cat}`}>{cat.toUpperCase()}</Link>
-              </Menu.Item>
-            ))}
-          </Menu>
+              ),
+            }))}
+          />
         </Col>
       </Row>
     </div>
