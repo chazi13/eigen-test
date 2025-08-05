@@ -1,12 +1,11 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import AppBar from "@/components/Appbar";
+import ArticleCard from "@/components/ArticleCard";
 import api from "@/lib/api";
 import { ArticlesResponse } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { List, Card, Spin, Typography } from "antd";
-import { format } from "date-fns";
+import { List, Spin, Typography } from "antd";
 import { useSearchParams } from "next/navigation";
 
 export default function ArticlesPage() {
@@ -39,38 +38,7 @@ export default function ArticlesPage() {
             dataSource={articles}
             renderItem={(item) => (
               <List.Item>
-                <Card
-                  title={item.title}
-                  cover={
-                    item.urlToImage ? (
-                      <img
-                        src={item.urlToImage}
-                        alt={item.title}
-                        style={{ height: 200, objectFit: "cover" }}
-                      />
-                    ) : undefined
-                  }
-                  hoverable
-                >
-                  <div style={{ marginBottom: 8 }}>
-                    <Typography.Text type="secondary">
-                      {format(item.publishedAt, "PP")}
-                    </Typography.Text>
-                    {item.author && (
-                      <>
-                        <Typography.Text style={{ margin: "0px 6px" }}>
-                          |
-                        </Typography.Text>
-                        <Typography.Text type="secondary">
-                          {item.author}
-                        </Typography.Text>
-                      </>
-                    )}
-                  </div>
-                  <Typography.Paragraph>
-                    {item.description}
-                  </Typography.Paragraph>
-                </Card>
+                <ArticleCard article={item} />
               </List.Item>
             )}
           />
