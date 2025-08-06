@@ -4,6 +4,7 @@ import "./globals.css";
 import QueryProvider from "@/providers/QueryProvider";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import AppBar from "@/components/Appbar";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,8 +33,10 @@ export default function RootLayout({
       >
         <QueryProvider>
           <AntdRegistry>
-            <AppBar />
-            {children}
+            <Suspense>
+              <AppBar />
+              {children}
+            </Suspense>
           </AntdRegistry>
         </QueryProvider>
       </body>
