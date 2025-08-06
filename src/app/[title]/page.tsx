@@ -2,12 +2,11 @@
 "use client";
 
 import ArticleAuthor from "@/components/ArticleAuthor";
-import ArticleCard from "@/components/ArticleCard";
+import ListArticle from "@/components/ListArticle";
 import api from "@/lib/api";
 import { ArticlesResponse } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { Col, List, Row, Spin, Typography } from "antd";
-import Link from "next/link";
+import { Col, Row, Spin, Typography } from "antd";
 import { useParams, useSearchParams } from "next/navigation";
 
 export default function DetailArticlePage() {
@@ -29,24 +28,10 @@ export default function DetailArticlePage() {
   });
 
   const article = detailResponse?.data?.articles?.[0];
-
-  const { data: otherArticleResponse, isLoading: otherArticleLoading } =
-    useQuery({
-      enabled: !!article,
-      queryKey: ["get-other-articles"],
-      queryFn: () => {
-        return api.get<ArticlesResponse>("/v2/everything", {
-          params: {
-            language: "en",
-            sources: article?.source?.id,
-            pageSize: 8,
-            page: 1,
-          },
-        });
-      },
-    });
-
-  const articles = otherArticleResponse?.data.articles ?? [];
+  const otherArticleFilter = {
+    language: "en",
+    sources: article?.source?.id,
+  };
 
   return (
     <div style={{ padding: 24 }}>
@@ -74,29 +59,13 @@ export default function DetailArticlePage() {
             </Typography.Paragraph>
           </Col>
           <Col span={24}>
-            <div style={{ paddingTop: 20 }}>
-              <Typography.Title level={3}>Other Articles</Typography.Title>
-              <List
-                loading={otherArticleLoading}
-                grid={{
-                  gutter: 16,
-                  xs: 1,
-                  sm: 2,
-                  md: 2,
-                  lg: 3,
-                  xl: 4,
-                  xxl: 6,
-                }}
-                dataSource={articles}
-                renderItem={(item) => (
-                  <List.Item>
-                    <Link href={`/${item.title}?source=everything`}>
-                      <ArticleCard article={item} />
-                    </Link>
-                  </List.Item>
-                )}
-              />
-            </div>
+            <ListArticle
+              noLoadMore
+              title="Other Articles"
+              filter={otherArticleFilter}
+              source="everything"
+              pageSize={8}
+            />
           </Col>
         </Row>
       ) : (
